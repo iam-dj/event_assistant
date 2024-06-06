@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Add New Event</h1>
-    <form id="eventForm" action="/add_event" method="POST">
+    <form id="eventForm" action="/add_event" method="POST" enctype="application/x-www-form-urlencoded">
         <!-- Basic Information -->
         <h2>Basic Information</h2>
         <label for="event_name">Event Name:</label>
@@ -77,10 +77,14 @@
     <script>
         document.getElementById('eventForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const formData = new FormData(this);
             
+            const formData = new URLSearchParams(new FormData(this)).toString();
+    
             fetch('/add_event', {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
                 body: formData
             })
             .then(response => response.json())
@@ -91,7 +95,7 @@
                 console.error('Error:', error);
             });
         });
-
+    
         function fetchEvents() {
             fetch('/events')
             .then(response => response.json())
@@ -105,9 +109,10 @@
                 });
             });
         }
-
+    
         // Initial fetch to display events
         fetchEvents();
     </script>
+    
 </body>
 </html>
