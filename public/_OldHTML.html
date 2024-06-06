@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Event</title>
+</head>
+<body>
+    <h1>Add New Event</h1>
+    <form id="eventForm" action="/add_event" method="POST" enctype="application/x-www-form-urlencoded">
+        <!-- Basic Information -->
+        <h2>Basic Information</h2>
+        <label for="event_name">Event Name:</label>
+        <input type="text" id="event_name" name="event_name" required><br>
+        <label for="event_date_time">Event Date and Time:</label>
+        <input type="datetime-local" id="event_date_time" name="event_date_time" required><br>
+        <label for="event_location_address">Event Location (Address):</label>
+        <input type="text" id="event_location_address" name="event_location_address"><br>
+        <label for="event_location_city">City:</label>
+        <input type="text" id="event_location_city" name="event_location_city"><br>
+        <label for="event_location_state">State:</label>
+        <input type="text" id="event_location_state" name="event_location_state"><br>
+        <label for="event_location_zip_code">Zip Code:</label>
+        <input type="text" id="event_location_zip_code" name="event_location_zip_code"><br>
+        <label for="event_duration">Event Duration:</label>
+        <input type="text" id="event_duration" name="event_duration"><br>
+        <!-- Contact Information -->
+        <h2>Contact Information</h2>
+        <label for="organizer_name">Organizer Name:</label>
+        <input type="text" id="organizer_name" name="organizer_name"><br>
+        <label for="organizer_email">Organizer Email:</label>
+        <input type="email" id="organizer_email" name="organizer_email"><br>
+        <!-- Event Details -->
+        <h2>Event Details</h2>
+        <label for="event_description">Event Description:</label>
+        <textarea id="event_description" name="event_description"></textarea><br>
+        <label for="event_type">Event Type:</label>
+        <input type="text" id="event_type" name="event_type"><br>
+        <label for="target_audience">Target Audience:</label>
+        <input type="text" id="target_audience" name="target_audience"><br>
+        <label for="expected_attendance">Expected Attendance:</label>
+        <input type="number" id="expected_attendance" name="expected_attendance" value="0"><br>
+        <label for="keynote_speakers">Keynote Speakers/Performers:</label>
+        <textarea id="keynote_speakers" name="keynote_speakers"></textarea><br>
+        <label for="agenda_schedule">Agenda/Schedule:</label>
+        <textarea id="agenda_schedule" name="agenda_schedule"></textarea><br>
+        <label for="special_guests">Special Guests/VIPs:</label>
+        <textarea id="special_guests" name="special_guests"></textarea><br>
+        <label for="budget">Budget:</label>
+        <input type="number" step="0.01" id="budget" name="budget" value="0.00"><br>
+        <!-- Promotional Material -->
+        <h2>Promotional Material</h2>
+        <label for="event_website_url">Event Website URL:</label>
+        <input type="url" id="event_website_url" name="event_website_url"><br>
+        <label for="social_media_links">Social Media Links:</label>
+        <textarea id="social_media_links" name="social_media_links"></textarea><br>
+        <label for="has_promotional_images">Has Promotional Images/Graphics:</label>
+        <input type="checkbox" id="has_promotional_images" name="has_promotional_images"><br>
+        <label for="event_hashtag">Event Hashtag:</label>
+        <input type="text" id="event_hashtag" name="event_hashtag"><br>
+        <!-- Media and Coverage -->
+        <h2>Media and Coverage</h2>
+        <label for="preferred_media_coverage">Preferred Media Coverage:</label>
+        <textarea id="preferred_media_coverage" name="preferred_media_coverage"></textarea><br>
+        <label for="has_press_kit">Has Press Kit:</label>
+        <input type="checkbox" id="has_press_kit" name="has_press_kit"><br>
+        <label for="interview_availability">Interview Availability:</label>
+        <textarea id="interview_availability" name="interview_availability"></textarea><br>
+        <label for="additional_notes_for_media">Additional Notes for Media:</label>
+        <textarea id="additional_notes_for_media" name="additional_notes_for_media"></textarea><br>
+        <input type="submit" value="Add Event">
+    </form>
+
+   <!-- <h1>Event List</h1> --> 
+    <ul id="eventList"></ul>
+
+    <script>
+        document.getElementById('eventForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new URLSearchParams(new FormData(this)).toString();
+    
+            fetch('/add_event', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                fetchEvents();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    
+        function fetchEvents() {
+            fetch('/events')
+            .then(response => response.json())
+            .then(events => {
+                const eventList = document.getElementById('eventList');
+                eventList.innerHTML = '';
+                events.forEach(event => {
+                    const li = document.createElement('li');
+                    li.textContent = `${event.event_name}: ${event.event_description}`;
+                    eventList.appendChild(li);
+                });
+            });
+        }
+    
+        // Initial fetch to display events
+        fetchEvents();
+    </script>
+    
+</body>
+</html>

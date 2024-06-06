@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Details</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { font-family: Arial, sans-serif; }
+        nav a { margin: 0 15px; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Event Manager</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/list">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Form</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <h1>Event Details</h1>
+        <div id="eventDetails" class="card">
+            <div class="card-body"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const eventId = urlParams.get('id');
+
+            fetch(`/event/${eventId}`)
+            .then(response => response.json())
+            .then(event => {
+                const eventDetails = document.getElementById('eventDetails').querySelector('.card-body');
+                eventDetails.innerHTML = `
+                    <h5 class="card-title">${event.event_name}</h5>
+                    <p class="card-text"><strong>Date and Time:</strong> ${new Date(event.event_date_time).toLocaleString()}</p>
+                    <p class="card-text"><strong>Location:</strong> ${event.event_location_address}, ${event.event_location_city}, ${event.event_location_state}, ${event.event_location_zip_code}</p>
+                    <p class="card-text"><strong>Duration:</strong> ${event.event_duration}</p>
+                    <p class="card-text"><strong>Organizer:</strong> ${event.organizer_name}, ${event.organizer_email}</p>
+                    <p class="card-text"><strong>Description:</strong> ${event.event_description}</p>
+                    <p class="card-text"><strong>Type:</strong> ${event.event_type}</p>
+                    <p class="card-text"><strong>Target Audience:</strong> ${event.target_audience}</p>
+                    <p class="card-text"><strong>Expected Attendance:</strong> ${event.expected_attendance}</p>
+                    <p class="card-text"><strong>Keynote Speakers:</strong> ${event.keynote_speakers}</p>
+                    <p class="card-text"><strong>Agenda:</strong> ${event.agenda_schedule}</p>
+                    <p class="card-text"><strong>Special Guests:</strong> ${event.special_guests}</p>
+                    <p class="card-text"><strong>Budget:</strong> ${event.budget}</p>
+                    <p class="card-text"><strong>Website:</strong> <a href="${event.event_website_url}" target="_blank">${event.event_website_url}</a></p>
+                    <p class="card-text"><strong>Social Media:</strong> ${event.social_media_links}</p>
+                    <p class="card-text"><strong>Promotional Images:</strong> ${event.has_promotional_images ? 'Yes' : 'No'}</p>
+                    <p class="card-text"><strong>Hashtag:</strong> ${event.event_hashtag}</p>
+                    <p class="card-text"><strong>Preferred Media Coverage:</strong> ${event.preferred_media_coverage}</p>
+                    <p class="card-text"><strong>Press Kit:</strong> ${event.has_press_kit ? 'Yes' : 'No'}</p>
+                    <p class="card-text"><strong>Interview Availability:</strong> ${event.interview_availability}</p>
+                    <p class="card-text"><strong>Additional Notes:</strong> ${event.additional_notes_for_media}</p>
+                `;
+            });
+        });
+    </script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

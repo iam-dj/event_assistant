@@ -33,7 +33,7 @@ db.connect((err) => {
                 return;
             }
 
-            const createTableQuery = `
+            const createEventsTableQuery = `
             CREATE TABLE IF NOT EXISTS events (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 event_name VARCHAR(255) NOT NULL,
@@ -63,12 +63,28 @@ db.connect((err) => {
                 additional_notes_for_media TEXT NULL
             );`;
 
-            db.query(createTableQuery, (err, result) => {
+            db.query(createEventsTableQuery, (err, result) => {
                 if (err) {
-                    console.error('Error creating table:', err);
+                    console.error('Error creating events table:', err);
                     return;
                 }
                 console.log('Table `events` created or already exists');
+            });
+
+            const createEventDetailsTableQuery = `
+            CREATE TABLE IF NOT EXISTS event_details (
+                detail_id INT AUTO_INCREMENT PRIMARY KEY,
+                event_id INT,
+                detail TEXT,
+                FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+            );`;
+
+            db.query(createEventDetailsTableQuery, (err, result) => {
+                if (err) {
+                    console.error('Error creating event_details table:', err);
+                    return;
+                }
+                console.log('Table `event_details` created or already exists');
             });
 
             db.end();

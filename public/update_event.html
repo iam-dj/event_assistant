@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Event</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { font-family: Arial, sans-serif; }
+        nav a { margin: 0 15px; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Event Manager</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/list">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Form</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <h1>Update Event</h1>
+        <form id="updateForm">
+            <!-- The form fields will be dynamically populated by JavaScript -->
+            <button type="submit" class="btn btn-primary">Update Event</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const eventId = urlParams.get('id');
+
+            fetch(`/event/${eventId}`)
+            .then(response => response.json())
+            .then(event => {
+                const form = document.getElementById('updateForm');
+
+                form.innerHTML = `
+                    <div class="form-group">
+                        <label for="event_name">Event Name:</label>
+                        <input type="text" class="form-control" id="event_name" name="event_name" value="${event.event_name}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="event_date_time">Event Date and Time:</label>
+                        <input type="datetime-local" class="form-control" id="event_date_time" name="event_date_time" value="${new Date(event.event_date_time).toISOString().slice(0, 16)}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="event_location_address">Event Location (Address):</label>
+                        <input type="text" class="form-control" id="event_location_address" name="event_location_address" value="${event.event_location_address}">
+                    </div>
+                    <div class="form-group">
+                        <label for="event_location_city">City:</label>
+                        <input type="text" class="form-control" id="event_location_city" name="event_location_city" value="${event.event_location_city}">
+                    </div>
+                    <div class="form-group">
+                        <label for="event_location_state">State:</label>
+                        <input type="text" class="form-control" id="event_location_state" name="event_location_state" value="${event.event_location_state}">
+                    </div>
+                    <div class="form-group">
+                        <label for="event_location_zip_code">Zip Code:</label>
+                        <input type="text" class="form-control" id="event_location_zip_code" name="event_location_zip_code" value="${event.event_location_zip_code}">
+                    </div>
+                    <div class="form-group">
+                        <label for="event_duration">Event Duration:</label>
+                        <input type="text" class="form-control" id="event_duration" name="event_duration" value="${event.event_duration}">
+                    </div>
+                    <div class="form-group">
+                        <label for="organizer_name">Organizer Name:</label>
+                        <input type="text" class="form-control" id="organizer_name" name="organizer_name" value="${event.organizer_name}">
+                    </div>
+                    <div class="form-group">
+                        <label for="organizer_email">Organizer Email:</label>
+                        <input type="email" class="form-control" id="organizer_email" name="organizer_email" value="${event.organizer_email}">
+                    </div>
+                    <div class="form-group">
+                        <label for="event_description">Event Description:</label>
+                        <textarea class="form-control" id="event_description" name="event_description">${event.event_description}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="event_type">Event Type:</label>
+                        <input type="text" class="form-control" id="event_type" name="event_type" value="${event.event_type}">
+                    </div>
+                    <div class="form-group">
+                        <label for="target_audience">Target Audience:</label>
+                        <input type="text" class="form-control" id="target_audience" name="target_audience" value="${event.target_audience}">
+                    </div>
+                    <div class="form-group">
+                        <label for="expected_attendance">Expected Attendance:</label>
+                        <input type="number" class="form-control" id="expected_attendance" name="expected_attendance" value="${event.expected_attendance}">
+                    </div>
+                    <div class="form-group">
+                        <label for="keynote_speakers">Keynote Speakers/Performers:</label>
+                        <textarea class="form-control" id="keynote_speakers" name="keynote_speakers">${event.keynote_speakers}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="agenda_schedule">Agenda/Schedule:</label>
+                        <textarea class="form-control" id="agenda_schedule" name="agenda_schedule">${event.agenda_schedule}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="special_guests">Special Guests/VIPs:</label>
+                        <textarea class="form-control" id="special_guests" name="special_guests">${event.special_guests}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="budget">Budget:</label>
+                        <input type="number" step="0.01" class="form-control" id="budget" name="budget" value="${event.budget}">
+                    </div>
+                    <div class="form-group">
+                        <label for="event_website_url">Event Website URL:</label>
+                        <input type="url" class="form-control" id="event_website_url" name="event_website_url" value="${event.event_website_url}">
+                    </div>
+                    <div class="form-group">
+                        <label for="social_media_links">Social Media Links:</label>
+                        <textarea class="form-control" id="social_media_links" name="social_media_links">${event.social_media_links}</textarea>
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="has_promotional_images" name="has_promotional_images" ${event.has_promotional_images ? 'checked' : ''}>
+                        <label class="form-check-label" for="has_promotional_images">Has Promotional Images/Graphics</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="event_hashtag">Event Hashtag:</label>
+                        <input type="text" class="form-control" id="event_hashtag" name="event_hashtag" value="${event.event_hashtag}">
+                    </div>
+                    <div class="form-group">
+                        <label for="preferred_media_coverage">Preferred Media Coverage:</label>
+                        <textarea class="form-control" id="preferred_media_coverage" name="preferred_media_coverage">${event.preferred_media_coverage}</textarea>
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="has_press_kit" name="has_press_kit" ${event.has_press_kit ? 'checked' : ''}>
+                        <label class="form-check-label" for="has_press_kit">Has Press Kit</label>
+                    </div>
+                    <div class="form-group">
+                        <label for="interview_availability">Interview Availability:</label>
+                        <textarea class="form-control" id="interview_availability" name="interview_availability">${event.interview_availability}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="additional_notes_for_media">Additional Notes for Media:</label>
+                        <textarea class="form-control" id="additional_notes_for_media" name="additional_notes_for_media">${event.additional_notes_for_media}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Event</button>
+                `;
+
+                form.onsubmit = function(e) {
+                    e.preventDefault();
+                    const formData = new FormData(form);
+                    const data = {};
+                    formData.forEach((value, key) => {
+                        data[key] = value;
+                    });
+                    data.has_promotional_images = formData.has('has_promotional_images');
+                    data.has_press_kit = formData.has('has_press_kit');
+
+                    fetch(`/update_event/${eventId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.href = '/list';
+                        } else {
+                            alert('Error updating event');
+                        }
+                    });
+                };
+            });
+        });
+    </script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
