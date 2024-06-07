@@ -37,12 +37,12 @@
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const eventId = urlParams.get('id');
-
-            fetch(`/event/${eventId}`)
+    
+            fetch(`http://ec2-3-80-61-230.compute-1.amazonaws.com/event/${eventId}`)
             .then(response => response.json())
             .then(event => {
                 const form = document.getElementById('updateForm');
-
+    
                 form.innerHTML = `
                     <div class="form-group">
                         <label for="event_name">Event Name:</label>
@@ -146,7 +146,7 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Update Event</button>
                 `;
-
+    
                 form.onsubmit = function(e) {
                     e.preventDefault();
                     const formData = new FormData(form);
@@ -156,8 +156,8 @@
                     });
                     data.has_promotional_images = formData.has('has_promotional_images');
                     data.has_press_kit = formData.has('has_press_kit');
-
-                    fetch(`/update_event/${eventId}`, {
+    
+                    fetch(`http://ec2-3-80-61-230.compute-1.amazonaws.com/update_event/${eventId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json'
@@ -175,6 +175,7 @@
             });
         });
     </script>
+    
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

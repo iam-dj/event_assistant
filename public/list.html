@@ -32,13 +32,13 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('/events')
+            fetch('http://ec2-3-80-61-230.compute-1.amazonaws.com/events')
             .then(response => response.json())
             .then(events => {
                 const eventList = document.getElementById('eventList');
                 eventList.innerHTML = '';
                 events.sort((a, b) => new Date(a.event_date_time) - new Date(b.event_date_time)); // Sort by date
-
+    
                 events.forEach(event => {
                     const li = document.createElement('li');
                     li.className = 'list-group-item';
@@ -54,14 +54,14 @@
                 });
             });
         });
-
+    
         function viewDetails(eventId) {
             window.location.href = `/event_details.html?id=${eventId}`;
         }
-
+    
         function deleteEvent(eventId) {
             if (confirm('Are you sure you want to delete this event?')) {
-                fetch(`/delete_event/${eventId}`, { method: 'DELETE' })
+                fetch(`http://ec2-3-80-61-230.compute-1.amazonaws.com/delete_event/${eventId}`, { method: 'DELETE' })
                 .then(response => {
                     if (response.ok) {
                         window.location.reload();
@@ -71,12 +71,12 @@
                 });
             }
         }
-
+    
         function updateEvent(eventId) {
             window.location.href = `/update_event.html?id=${eventId}`;
         }
     </script>
-    <!-- Bootstrap JS and dependencies -->
+        <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

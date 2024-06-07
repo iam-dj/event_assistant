@@ -36,8 +36,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const eventId = urlParams.get('id');
-
-            fetch(`/event/${eventId}`)
+    
+            fetch(`http://ec2-3-80-61-230.compute-1.amazonaws.com/event/${eventId}`)
             .then(response => response.json())
             .then(event => {
                 const eventDetails = document.getElementById('eventDetails').querySelector('.card-body');
@@ -67,6 +67,7 @@
             });
         });
     </script>
+    
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
