@@ -23,7 +23,7 @@ db.connect((err) => {
             console.error('Error creating database:', err);
             return;
         }
-        console.log('Database `event_management` created or already exists');
+        console.log('Database `event_aws` created or already exists');
 
         const useDatabaseQuery = `USE ${process.env.DB_NAME};`;
 
